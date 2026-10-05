@@ -5,7 +5,7 @@ Anything learned afterwards goes under "Exploratory" or "Post-hoc changes" with 
 
 ---
 
-## Stage 0 close — 2026-10-05
+## Stage 0 close
 
 ### Data confirmed (file-first)
 
@@ -71,7 +71,7 @@ S3 and S4 are scenario/scoring outputs and are not hypothesis-tested.
 
 ---
 
-## Stage 1–2 results — 2026-10-05
+## Stage 1–2 results
 
 ### Backbone (Stage 1)
 
@@ -106,7 +106,7 @@ Changepoints (PELT on STL-adjusted log kg): US l2 2020-08, 2022-07, 2023-08; rbf
 
 ---
 
-## Stage 3–4 outputs — 2026-10-05 (scenario / scoring; not hypothesis-tested)
+## Stage 3–4 outputs (scenario / scoring; not hypothesis-tested)
 
 ### S3 (defaults δ=0.6, AGM 30%, premium 1.5×, lead flat)
 
@@ -136,7 +136,7 @@ Rank-stable top candidates (rank spread ≤ 2 across three weight sets): IT, FR,
 
 ---
 
-## H6 and exploratory — 2026-10-05 (later the same day)
+## H6 and exploratory
 
 | ID | Verdict | Evidence |
 |---|---|---|
@@ -144,7 +144,7 @@ Rank-stable top candidates (rank spread ≤ 2 across three weight sets): IT, FR,
 
 Pre-registered adoption rule kept as written. Relaxed-window alternative recorded under exploratory E3, not applied.
 
-### Exploratory (dated 2026-10-05; see docs/exploratory.md)
+### Exploratory(see docs/exploratory.md)
 
 - E1: piecewise-linear PELT — US slope −4%/yr from 2023-08 with no break in 2025; WORLD −4%/yr from 2023-10. The decline predates the tariff by ~20 months and coincides with the first US local-production capacity.
 - E2: front-loading 2025-03..05 = +10.2M kg (+0.43 months), payback 2025-06..09 = −12.4M kg (−0.53 months).

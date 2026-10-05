@@ -1,6 +1,6 @@
 # Exploratory analyses (post-hoc, not pre-registered)
 
-_Generated 2026-10-05. These were run after the pre-registered results were fixed; they inform interpretation only and are not counted as hypothesis tests._
+_These were run after the pre-registered results were fixed; they inform interpretation only and are not counted as hypothesis tests._
 
 ## E1. Trend breaks (piecewise-linear PELT on STL-adjusted log kg)
 

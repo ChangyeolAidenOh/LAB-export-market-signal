@@ -77,7 +77,7 @@ def relaxed_adoption() -> pd.DataFrame:
 def main() -> None:
     series = S.load()
     lines = ["# Exploratory analyses (post-hoc, not pre-registered)", "",
-             f"_Generated {pd.Timestamp.today():%Y-%m-%d}. These were run after the pre-registered results were fixed; "
+             "_These were run after the pre-registered results were fixed; "
              "they inform interpretation only and are not counted as hypothesis tests._", ""]
 
     lines += ["## E1. Trend breaks (piecewise-linear PELT on STL-adjusted log kg)", ""]
