@@ -36,7 +36,7 @@ def main() -> None:
     print("\n2025 actual for reference (kg M, USD M):")
     print(ref.round(1).to_string())
 
-    print(f"\nUS local production ramp: displaced Korea->US kg in 2027 = {realloc['freed_kg_2027'].iloc[0] / 1e6:.1f}M "
+    print(f"\nLocal ramp: displaced Korea->US kg in 2027 = {realloc['freed_kg_2027'].iloc[0] / 1e6:.1f}M "
           f"(delta={realloc['delta'].iloc[0]})")
     print("Reallocation candidates (non-US top markets):")
     r = realloc.copy()
@@ -50,7 +50,7 @@ def main() -> None:
     hist = sm[sm["series"] == "US"].set_index("date")["kg"]
     fig, ax = plt.subplots(figsize=(10, 4))
     ax.plot(hist.index[-36:], hist.iloc[-36:] / 1e6, color="#333", lw=1.2, label="actual")
-    for sc, col in [("Base", "#1f77b4"), ("US local production ramp", "#d62728")]:
+    for sc, col in [("Base", "#1f77b4"), ("Local ramp", "#d62728")]:
         g = us[us["scenario"] == sc]
         ax.plot(g["month"], g["kg_point"] / 1e6, color=col, lw=1.5, label=sc)
         if sc == "Base":

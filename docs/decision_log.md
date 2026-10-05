@@ -110,7 +110,7 @@ Changepoints (PELT on STL-adjusted log kg): US l2 2020-08, 2022-07, 2023-08; rbf
 
 ### S3 (defaults δ=0.6, AGM 30%, premium 1.5×, lead flat)
 
-| Series | 2025 actual kg | 2027 Base kg | US local production ramp | Base vs 2025 |
+| Series | 2025 actual kg | 2027 Base kg | Local ramp | Base vs 2025 |
 |---|---|---|---|---|
 | US | 278.0M | 234.2M | 222.0M | −16% / −20% |
 | JP | 84.8M | 87.3M | — | +3% |
@@ -146,7 +146,7 @@ Pre-registered adoption rule kept as written. Relaxed-window alternative recorde
 
 ### Exploratory (dated 2026-10-05; see docs/exploratory.md)
 
-- E1: piecewise-linear PELT — US slope −4%/yr from 2023-08 with no break in 2025; WORLD −4%/yr from 2023-10. The decline predates the tariff by ~20 months and coincides with the first US local production capacity.
+- E1: piecewise-linear PELT — US slope −4%/yr from 2023-08 with no break in 2025; WORLD −4%/yr from 2023-10. The decline predates the tariff by ~20 months and coincides with the first US local-production capacity.
 - E2: front-loading 2025-03..05 = +10.2M kg (+0.43 months), payback 2025-06..09 = −12.4M kg (−0.53 months).
 - E3: coverage window [0.70, 0.95] would adopt Chronos-2 for CA and JP as well.
 

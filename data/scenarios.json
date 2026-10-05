@@ -6,9 +6,9 @@
     "lead_change": 0.0,
     "_lead_change": "assumed log change in lead price for 2027 vs last 12m average; applied through estimated CPT(6)"
   },
-  "tennessee_ramp": {
+  "local_ramp": {
     "incremental_units_per_year": 1600000,
-    "_incremental": "public guidance: US local production 1.4M -> 3.0M units; completion target 2026-09",
+    "_incremental": "public reports: a Korean manufacturer's US plant 1.4M -> 3.0M units; completion target 2026-09",
     "ramp_start": "2026-10-01",
     "ramp_end": "2027-12-01",
     "delta_grid": [0.3, 0.6, 0.9],

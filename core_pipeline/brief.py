@@ -103,9 +103,9 @@ def build(series: str, d: dict) -> str:
     lines += [f"## {n}. 2027 — 시나리오 시트 (조건부, 결론 아님)", "",
               f"- Base: {_m(base27)} (80% 밴드 {_m(lo27)}~{_m(hi27)}), 2025 대비 {base27 / y2025 - 1:+.0%}."]
     if series == "US":
-        tn = plan[plan["scenario"] == "US local production ramp"]
+        tn = plan[plan["scenario"] == "Local ramp"]
         freed = tn["displaced_kg"].sum()
-        lines.append(f"- US local production ramp(δ={d['realloc']['delta'].iloc[0]}): {_m(tn['kg_point'].sum())}, 비는 물량 {_m(freed)} ≈ {freed / 21 / 1e3:,.0f}천 개.")
+        lines.append(f"- Local ramp(δ={d['realloc']['delta'].iloc[0]}): {_m(tn['kg_point'].sum())}, 비는 물량 {_m(freed)} ≈ {freed / 21 / 1e3:,.0f}천 개.")
     else:
         rr = d["realloc"][d["realloc"]["series"] == series]
         if not rr.empty:

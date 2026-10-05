@@ -90,7 +90,7 @@ def ramp_fraction(months: pd.DatetimeIndex, start: str, end: str) -> np.ndarray:
 def run(delta: float | None = None, agm_share: float | None = None, agm_premium: float | None = None,
         lead_change: float | None = None) -> tuple[pd.DataFrame, pd.DataFrame]:
     prm = load_params()
-    delta = prm["tennessee_ramp"]["delta_default"] if delta is None else delta
+    delta = prm["local_ramp"]["delta_default"] if delta is None else delta
     agm_share = prm["mix_shift"]["agm_share_default"] if agm_share is None else agm_share
     agm_premium = prm["mix_shift"]["agm_premium_default"] if agm_premium is None else agm_premium
     lead_change = prm["base"]["lead_change"] if lead_change is None else lead_change
@@ -119,15 +119,15 @@ def run(delta: float | None = None, agm_share: float | None = None, agm_premium:
         out.append(b)
 
         if name == "US":
-            frac = ramp_fraction(pd.DatetimeIndex(base["month"]), prm["tennessee_ramp"]["ramp_start"], prm["tennessee_ramp"]["ramp_end"])
-            cut = delta * prm["tennessee_ramp"]["incremental_units_per_year"] * kg_per_unit / 12 * frac
+            frac = ramp_fraction(pd.DatetimeIndex(base["month"]), prm["local_ramp"]["ramp_start"], prm["local_ramp"]["ramp_end"])
+            cut = delta * prm["local_ramp"]["incremental_units_per_year"] * kg_per_unit / 12 * frac
             t = base.copy()
             for c in ["kg_point", "kg_lo80", "kg_hi80", "kg_lo95", "kg_hi95"]:
                 t[c] = np.clip(t[c] - cut, 0, None)
             t["displaced_kg"] = cut
-            out.append(t.assign(scenario="US local production ramp", usd_per_kg=p_base))
+            out.append(t.assign(scenario="Local ramp", usd_per_kg=p_base))
         else:
-            out.append(base.assign(scenario="US local production ramp", usd_per_kg=p_base, displaced_kg=0.0))
+            out.append(base.assign(scenario="Local ramp", usd_per_kg=p_base, displaced_kg=0.0))
 
         out.append(base.assign(scenario="Mix shift", usd_per_kg=p_base * mix_factor))
 
@@ -144,7 +144,7 @@ def run(delta: float | None = None, agm_share: float | None = None, agm_premium:
 
 
 def reallocation(plan: pd.DataFrame, sm: pd.DataFrame, delta: float, prm: dict) -> pd.DataFrame:
-    us = plan[(plan["series"] == "US") & (plan["scenario"] == "US local production ramp")]
+    us = plan[(plan["series"] == "US") & (plan["scenario"] == "Local ramp")]
     freed = float(us["displaced_kg"].sum())
     rows = []
     for name in ["JP", "AU", "GB", "CA"]:

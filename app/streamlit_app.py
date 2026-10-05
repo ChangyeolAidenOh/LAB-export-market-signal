@@ -169,7 +169,7 @@ with tab2:
     st.subheader("S3. 2027 시나리오 계획 시트")
     st.caption("중립 점예측이 아니라 조건부 시나리오. 아래 가정은 전부 바꿔볼 것 — 결론이 아니라 질문 목록.")
     a, b, c, d = st.columns(4)
-    delta = a.slider("δ — 미국 현지생산 증분 중 한국 수출 대체 비율", 0.0, 1.0, float(prm["tennessee_ramp"]["delta_default"]), 0.1)
+    delta = a.slider("δ — 미국 현지생산 증분 중 한국 수출 대체 비율", 0.0, 1.0, float(prm["local_ramp"]["delta_default"]), 0.1)
     agm = b.slider("2027 AGM 비중", 0.10, 0.50, float(prm["mix_shift"]["agm_share_default"]), 0.05)
     prem = c.slider("AGM 단가 프리미엄 (×)", 1.0, 2.5, float(prm["mix_shift"]["agm_premium_default"]), 0.1)
     lead = d.slider("2027 납값 변동 (log)", -0.3, 0.3, float(prm["base"]["lead_change"]), 0.05)
@@ -195,7 +195,7 @@ with tab2:
     ps = plan[plan["series"] == sel2]
     figp = go.Figure()
     figp.add_trace(go.Scatter(x=hist.index[-36:], y=hist.iloc[-36:] / 1e6, name="실적", line=dict(color=C["actual"])))
-    for scn, col in [("Base", C["ma"]), ("US local production ramp", C["tn"]), ("Mix shift", C["mix"])]:
+    for scn, col in [("Base", C["ma"]), ("Local ramp", C["tn"]), ("Mix shift", C["mix"])]:
         g = ps[ps["scenario"] == scn]
         if scn == "Base":
             figp.add_trace(go.Scatter(x=g["month"], y=g["kg_hi80"] / 1e6, line=dict(width=0), showlegend=False, hoverinfo="skip"))
@@ -206,7 +206,7 @@ with tab2:
     st.plotly_chart(figp, use_container_width=True)
 
     freed = realloc["freed_kg_2027"].iloc[0]
-    st.markdown(f"**미국 현지생산 ramp(δ={delta:.1f})로 2027년에 비는 미국향 물량: {freed / 1e6:.1f}M kg ≈ {freed / prm['kg_per_unit'] / 1e3:.0f}천 개**")
+    st.markdown(f"**현지생산 ramp(δ={delta:.1f})로 2027년에 비는 미국향 물량: {freed / 1e6:.1f}M kg ≈ {freed / prm['kg_per_unit'] / 1e3:.0f}천 개**")
     r = realloc.copy()
     pt = D["pt"][D["pt"]["target"] == "usd_per_kg"].set_index("series")["cpt3"]
     r["S1 전가율(3개월)"] = r["series"].map(pt).round(2)
