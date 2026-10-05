@@ -132,3 +132,28 @@ Rank-stable top candidates (rank spread ≤ 2 across three weight sets): IT, FR,
 | D-08 | 2027 band reuses h=6 conformal quantile for h>6 | No longer-horizon residuals; documented as under-coverage |
 | D-09 | S4 uses value share incl. intra-EU imports | Comext WORLD partner includes EU members; Korean share is of total imports |
 | D-10 | AGM share (CN 8507 10 80) reported as a market indicator, not used in S1 | 8507 10 80 includes non-AGM small types; unit price comparison unreliable |
+
+
+---
+
+## H6 and exploratory — 2026-10-05 (later the same day)
+
+| ID | Verdict | Evidence |
+|---|---|---|
+| H6 | SUPPORTED | Chronos-2 zero-shot h1–3 MASE below STL+ETS on 5/6 series (JP 0.49 vs 0.74, CA 0.77 vs 1.26, GB 0.82 vs 1.28, US 0.82 vs 0.87, WORLD 0.85 vs 0.93; AU 0.91 vs 0.77). Adoption unchanged except GB because Chronos cov80 falls outside [0.70, 0.90] on CA (0.92), JP (0.94), US (0.64), WORLD (0.61). |
+
+Pre-registered adoption rule kept as written. Relaxed-window alternative recorded under exploratory E3, not applied.
+
+### Exploratory (dated 2026-10-05; see docs/exploratory.md)
+
+- E1: piecewise-linear PELT — US slope −4%/yr from 2023-08 with no break in 2025; WORLD −4%/yr from 2023-10. The decline predates the tariff by ~20 months and coincides with the first US local production capacity.
+- E2: front-loading 2025-03..05 = +10.2M kg (+0.43 months), payback 2025-06..09 = −12.4M kg (−0.53 months).
+- E3: coverage window [0.70, 0.95] would adopt Chronos-2 for CA and JP as well.
+
+### Decisions
+
+| # | Decision | Reason |
+|---|---|---|
+| D-11 | 2027 base forecast is fitted locally with the adopted model (incl. Chronos-2) and saved; the dashboard only applies scenario arithmetic | Streamlit Cloud memory; local result preserved exactly |
+| D-12 | S1 extended to top-15 destinations for the pass-through map; H4/H5 verdicts remain on the pre-registered top-5 | Richer signal without changing the test |
+| D-13 | Market briefs generated from parquet with rule-based questions; no LLM | Reproducible, no cost, every sentence traceable to a number |

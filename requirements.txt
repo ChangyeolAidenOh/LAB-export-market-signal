@@ -11,3 +11,4 @@ pycountry
 openpyxl
 streamlit
 plotly
+tabulate
