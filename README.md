@@ -10,7 +10,7 @@ HS 8507.10 (피스톤 엔진 시동용 납축전지) · 한국 수출 188개국 
 
 ![ci](https://github.com/ChangyeolAidenOh/LAB-export-market-signal/actions/workflows/ci.yml/badge.svg) ![monthly-refresh](https://github.com/ChangyeolAidenOh/LAB-export-market-signal/actions/workflows/monthly_refresh.yml/badge.svg)
 
-**대시보드:** _(Streamlit Community Cloud URL — 배포 후 기입)_ · **시장별 브리프:** `docs/briefs/` · **매월 20일 자동 갱신** (GitHub Actions)
+**대시보드:** https://lab-export-market-signal.streamlit.app · **시장별 브리프:** `docs/briefs/` · **매월 20일 자동 갱신** (GitHub Actions)
 
 ## 왜 만들었나
 
