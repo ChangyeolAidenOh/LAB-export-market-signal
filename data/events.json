@@ -1,0 +1,78 @@
+{
+  "_note": "Pre-registered event calendar for HS 8507.10 exports from Korea to the US. Fixed at Stage 0 close (2026-10-05). Any later change must be logged in docs/decision_log.md with a reason.",
+  "hs": "850710",
+  "baseline_tariff": {
+    "label": "KORUS: 0% (MFN 3.5%, KR special rate Free)",
+    "source": "HTSUS 8507.10.00 special rates column",
+    "confidence": "high"
+  },
+  "events": [
+    {
+      "id": "E1",
+      "date": "2025-04-05",
+      "type": "tariff",
+      "label": "IEEPA reciprocal tariff 10% baseline effective; Korea-specific 25% took effect Apr 9 and was paused to 10% the same day",
+      "tariff_after": 0.10,
+      "source": "Executive Order 14257 (Apr 2, 2025); tariff trackers (hsrates.com, tariffstool.com)",
+      "confidence": "high",
+      "expected_effect": "US-bound export volume drops after front-loading in Mar-Apr; unit price may rise if partially passed through"
+    },
+    {
+      "id": "E2",
+      "date": "2025-08-07",
+      "type": "tariff",
+      "label": "Korea-US agreement (Jul 30) implemented: 15% all-in rate",
+      "tariff_after": 0.15,
+      "source": "Executive Order of Jul 31, 2025; CRS IN12545",
+      "confidence": "high",
+      "expected_effect": "second step down in US-bound volume or further price adjustment"
+    },
+    {
+      "id": "E3",
+      "date": "2025-11-01",
+      "type": "supply",
+      "label": "A Korean manufacturer announces US local production expansion 1.4M -> 3.0M units (AAPEX)",
+      "source": "company press release (verify exact date)",
+      "confidence": "medium",
+      "expected_effect": "no immediate effect; sets up structural decline in Korea->US exports from late 2026"
+    },
+    {
+      "id": "E4",
+      "date": "2026-02-20",
+      "type": "tariff",
+      "label": "Supreme Court (Learning Resources v. Trump) invalidates IEEPA tariffs; Section 122 10% applies from Feb 24",
+      "tariff_after": 0.10,
+      "source": "Supreme Court opinion Feb 20, 2026; EO of Feb 20, 2026; law firm alerts (Ropes & Gray, WilmerHale)",
+      "confidence": "high",
+      "expected_effect": "modest relief (15% -> 10%); refund uncertainty"
+    },
+    {
+      "id": "E5",
+      "date": "2026-07-24",
+      "type": "tariff",
+      "label": "Section 122 expires (150-day limit); replaced by Section 301 forced-labor tariff 10% / 12.5%",
+      "tariff_after": 0.10,
+      "source": "tariffstool.com (verify against Federal Register)",
+      "confidence": "medium",
+      "expected_effect": "roughly flat"
+    },
+    {
+      "id": "E6",
+      "date": "2026-09-01",
+      "type": "supply",
+      "label": "US local production 3.0M-unit expansion completion target",
+      "source": "company guidance",
+      "confidence": "medium",
+      "expected_effect": "Korea->US exports begin to be displaced by local production (S3 US local production ramp scenario start)"
+    }
+  ],
+  "not_applicable": [
+    {
+      "id": "X1",
+      "date": "2025-05-03",
+      "label": "Section 232 auto-parts 25% tariff",
+      "reason": "Lead-acid batteries (HTS 8507.10) are reported NOT on the covered auto-parts list (dutiable.io, fact-checked 2026-10-03). Primary Annex I text not independently verified. Kept here so the exclusion is explicit.",
+      "confidence": "medium"
+    }
+  ]
+}
