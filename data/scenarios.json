@@ -1,0 +1,26 @@
+{
+  "_note": "All S3 parameters are exposed here and in the Streamlit sliders. None of these are findings; they are assumptions to be challenged.",
+  "horizon": {"start": "2027-01-01", "end": "2027-12-01"},
+  "kg_per_unit": 21.0,
+  "base": {
+    "lead_change": 0.0,
+    "_lead_change": "assumed log change in lead price for 2027 vs last 12m average; applied through estimated CPT(6)"
+  },
+  "tennessee_ramp": {
+    "incremental_units_per_year": 1600000,
+    "_incremental": "public guidance: US local production 1.4M -> 3.0M units; completion target 2026-09",
+    "ramp_start": "2026-10-01",
+    "ramp_end": "2027-12-01",
+    "delta_grid": [0.3, 0.6, 0.9],
+    "delta_default": 0.6,
+    "_delta": "share of incremental local output that replaces Korea->US exports (industry total, not one company)"
+  },
+  "mix_shift": {
+    "agm_share_2026": 0.20,
+    "agm_share_grid": [0.25, 0.30],
+    "agm_share_default": 0.30,
+    "agm_premium_grid": [1.5, 2.0],
+    "agm_premium_default": 1.5,
+    "_premium": "AGM unit price as a multiple of MF/EFB; retail observations suggest 1.5-2.0x"
+  }
+}
