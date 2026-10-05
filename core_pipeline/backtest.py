@@ -39,7 +39,8 @@ def run(series: dict[str, pd.Series], models: dict, n_test: int = 12, n_cal: int
                 try:
                     yhat = fn(train, h_max)
                 except Exception as e:
-                    print(f"{name} {mname} {origin:%Y-%m}: {e}")
+                    if k == 0:
+                        print(f"{name} {mname}: {e}")
                     continue
                 for i, (td, yt) in enumerate(test.items()):
                     h = i + 1

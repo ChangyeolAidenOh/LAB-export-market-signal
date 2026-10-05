@@ -103,11 +103,32 @@ Changepoints (PELT on STL-adjusted log kg): US l2 2020-08, 2022-07, 2023-08; rbf
 - The US market shrank after the tariff; within it, low-cost origins exited and premium origins gained; Korea held share. The pre-registered "Korea loses to Mexico" story is wrong.
 - Lead-price pass-through is fast and near-complete in the UK, slow and partial in the US and Japan — a market-level pricing-power difference, not a uniform cost pass-through.
 
-## Post-hoc changes
 
-(none — hypotheses, windows and rules unchanged)
+---
 
-## Exploratory additions (dated)
+## Stage 3–4 outputs — 2026-10-05 (scenario / scoring; not hypothesis-tested)
 
-- 2026-10-05: candidate trend-break test (PELT model="linear") for the 2025H2 slope change in the US series — not run yet.
+### S3 (defaults δ=0.6, AGM 30%, premium 1.5×, lead flat)
 
+| Series | 2025 actual kg | 2027 Base kg | US local production ramp | Base vs 2025 |
+|---|---|---|---|---|
+| US | 278.0M | 234.2M | 222.0M | −16% / −20% |
+| JP | 84.8M | 87.3M | — | +3% |
+| AU | 61.6M | 56.3M | — | −9% |
+| GB | 47.8M | 55.9M | — | +17% |
+| CA | 37.3M | 33.8M | — | −9% |
+| WORLD | 894.0M | 827.7M | — | −7% |
+
+Displaced Korea→US kg in 2027 at δ=0.6: 12.2M (≈0.58M units) = 22% of GB 2027 Base, 36% of CA, 14% of JP, 22% of AU.
+
+### S4 (24 member states with age data; GR, SK, BG excluded)
+
+Rank-stable top candidates (rank spread ≤ 2 across three weight sets): IT, FR, DE, ES, PL, CZ, PT, RO. Italy ranks 1st under all three.
+
+### Decisions
+
+| # | Decision | Reason |
+|---|---|---|
+| D-08 | 2027 band reuses h=6 conformal quantile for h>6 | No longer-horizon residuals; documented as under-coverage |
+| D-09 | S4 uses value share incl. intra-EU imports | Comext WORLD partner includes EU members; Korean share is of total imports |
+| D-10 | AGM share (CN 8507 10 80) reported as a market indicator, not used in S1 | 8507 10 80 includes non-AGM small types; unit price comparison unreliable |

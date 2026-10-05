@@ -1,7 +1,10 @@
 """S3: 2027 scenario plan sheet.
 
-Base         : adopted baseline model refit on full history, forecast to 2027-12, conformal band
-               from backtest residuals; unit price = last-12m USD/kg adjusted by CPT(6) x lead assumption.
+fit_base()   : refit every adopted model (incl. Chronos-2) on full history -> base_forecast_2027.parquet.
+               Local step; needs torch when a series adopted M3_chronos.
+run()        : scenario arithmetic on the saved base forecast (no model fitting) -> plan_2027.parquet.
+               This is what the dashboard calls, so it runs without torch.
+Base         : saved base forecast; unit price = last-12m USD/kg adjusted by CPT(6) x lead assumption.
 US local production    : Base kg minus delta x incremental local output (ramped) for the US series.
 Mix shift    : Base kg with unit price lifted by AGM share/premium assumption.
 
@@ -34,11 +37,38 @@ def conformal_quantiles(series: str, model: str) -> pd.DataFrame:
     return q
 
 
+def model_fn(model: str):
+    if model in MODEL_FN:
+        return MODEL_FN[model]
+    if model == "M3_chronos":
+        from core_pipeline.baseline_models import ChronosForecaster
+        c = ChronosForecaster()
+        if not c.available():
+            raise RuntimeError("M3_chronos adopted but chronos is not installed; run fit_base locally with chronos")
+        return c.forecast
+    raise KeyError(model)
+
+
+def fit_base(horizon_end: str | None = None) -> pd.DataFrame:
+    """Refit every adopted model on full history and save the 2027 base forecast.
+    Runs locally (needs torch when a series adopted M3_chronos). The app never calls this."""
+    prm = load_params()
+    horizon_end = horizon_end or prm["horizon"]["end"]
+    adopted = pd.read_parquet(P / "adopted_models.parquet").set_index("series")["model"]
+    series = S.load()
+    frames = []
+    for name, y in series.items():
+        frames.append(base_forecast(name, y.dropna(), adopted[name], horizon_end).assign(model=adopted[name]))
+    base = pd.concat(frames, ignore_index=True)
+    base.to_parquet(P / "base_forecast_2027.parquet", index=False)
+    return base
+
+
 def base_forecast(name: str, y: pd.Series, model: str, horizon_end: str) -> pd.DataFrame:
     last = y.index[-1]
     months = pd.date_range(last + pd.offsets.MonthBegin(1), horizon_end, freq="MS")
     h = len(months)
-    yhat = np.clip(MODEL_FN[model](y, h), 0, None)
+    yhat = np.clip(model_fn(model)(y, h), 0, None)
     q = conformal_quantiles(name, model)
     rows = []
     for i, d in enumerate(months):
@@ -68,17 +98,18 @@ def run(delta: float | None = None, agm_share: float | None = None, agm_premium:
     kg_per_unit = prm["kg_per_unit"]
     h_start, h_end = prm["horizon"]["start"], prm["horizon"]["end"]
 
-    adopted = pd.read_parquet(P / "adopted_models.parquet").set_index("series")["model"]
+    bf = P / "base_forecast_2027.parquet"
+    if not bf.exists():
+        fit_base(h_end)
+    base_all = pd.read_parquet(bf)
+    adopted = base_all.drop_duplicates("series").set_index("series")["model"]
     sm = pd.read_parquet(P / "series_monthly.parquet")
     pt = pd.read_parquet(P / "pass_through.parquet")
     cpt6 = pt[pt["target"] == "usd_per_kg"].set_index("series")["cpt6"]
-    series = S.load()
 
     out = []
-    for name, y in series.items():
-        model = adopted[name]
-        base = base_forecast(name, y.dropna(), model, h_end)
-        base = base[base["month"] >= h_start].copy()
+    for name in adopted.index:
+        base = base_all[(base_all["series"] == name) & (base_all["month"] >= h_start)].drop(columns=["model"]).copy()
         g = sm[sm["series"] == name].set_index("date")
         p_last = float(g["usd_per_kg"].iloc[-12:].mean())
         p_base = p_last * np.exp(cpt6.get(name, 0.0) * lead_change)

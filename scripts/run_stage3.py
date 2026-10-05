@@ -18,6 +18,8 @@ FIG = Path("docs/figs")
 
 def main() -> None:
     FIG.mkdir(parents=True, exist_ok=True)
+    base = scenarios.fit_base()
+    print("base forecast models:", base.drop_duplicates("series").set_index("series")["model"].to_dict())
     plan, realloc = scenarios.run()
     a = plan.attrs
     print(f"params: delta={a['delta']} agm_share={a['agm_share']} agm_premium={a['agm_premium']} lead_change={a['lead_change']}")

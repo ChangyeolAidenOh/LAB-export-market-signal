@@ -40,14 +40,17 @@ def main() -> None:
     ages = sorted(df[age_col].unique())
     print("age categories:", ages)
     total = df[df[age_col] == "TOTAL"].groupby(["geo", "year"])["value"].sum().rename("cars_total")
-    old = df[df[age_col].isin([a for a in ages if a.startswith("Y10") or a.startswith("Y_GE10") or a.startswith("Y_GE20") or a == "Y20-29" or a == "Y_GE30"])]
-    old = old.groupby(["geo", "year"])["value"].sum().rename("cars_age_ge10")
+    old_codes = [a for a in ages if a.startswith("Y10") or a.startswith("Y_GE10") or a.startswith("Y_GT10")
+                 or a.startswith("Y_GE20") or a.startswith("Y_GT20") or a.startswith("Y20")]
+    print("age>=10 codes used:", old_codes)
+    old = df[df[age_col].isin(old_codes)].groupby(["geo", "year"])["value"].sum().rename("cars_age_ge10")
     out = pd.concat([total, old], axis=1).reset_index()
     out["share_age_ge10"] = out["cars_age_ge10"] / out["cars_total"]
     out = out.dropna(subset=["cars_total"])
+    out["has_age"] = out["share_age_ge10"].notna()
     OUT.parent.mkdir(parents=True, exist_ok=True)
     out.to_parquet(OUT, index=False)
-    latest = out.sort_values("year").groupby("geo").tail(1)
+    latest = out[out["has_age"]].sort_values("year").groupby("geo").tail(1)
     print(f"{OUT}: {len(out)} rows, years {out['year'].min()}..{out['year'].max()}")
     print(latest.sort_values("cars_total", ascending=False).head(12).round(3).to_string(index=False))
 

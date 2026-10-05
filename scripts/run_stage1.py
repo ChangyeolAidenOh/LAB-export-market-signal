@@ -50,12 +50,12 @@ def main() -> None:
     print("\nAdopted model per series:")
     print(picks.round(3).to_string(index=False))
 
-    if "M3_chronos" in models:
-        w = sc[sc["h"].isin([1, 2, 3])].groupby(["series", "model"])["mase"].mean().unstack()
+    w = sc[sc["h"].isin([1, 2, 3])].groupby(["series", "model"])["mase"].mean().unstack()
+    if "M3_chronos" in w.columns:
         wins = int((w["M3_chronos"] < w["M1_stl_ets"]).sum())
         print(f"\nH6: Chronos beats STL+ETS on {wins}/6 series -> {'SUPPORTED' if wins >= 4 else 'REJECTED'}")
     else:
-        print("\nH6: not tested (chronos not loaded)")
+        print("\nH6: not tested (chronos not loaded or failed)")
 
     cps = detect_all(series)
     cps.to_parquet(P / "changepoints.parquet", index=False)

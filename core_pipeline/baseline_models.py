@@ -70,8 +70,17 @@ class ChronosForecaster:
     def forecast(self, y: pd.Series, h: int) -> np.ndarray:
         import torch
         ctx = torch.tensor(y.to_numpy()[-self.context:], dtype=torch.float32)
-        q, mean = self.pipe.predict_quantiles(context=ctx, prediction_length=h, quantile_levels=[0.1, 0.5, 0.9])
-        return np.asarray(q[0, :, 1], dtype=float)
+        if "chronos-2" in (self.name or ""):
+            ctx = ctx.reshape(1, 1, -1)
+        try:
+            q, _ = self.pipe.predict_quantiles(ctx, prediction_length=h, quantile_levels=[0.1, 0.5, 0.9])
+        except TypeError:
+            q, _ = self.pipe.predict_quantiles(context=ctx, prediction_length=h, quantile_levels=[0.1, 0.5, 0.9])
+        q = q[0] if isinstance(q, (list, tuple)) else q
+        arr = np.asarray(q.detach().cpu().numpy() if hasattr(q, "detach") else q, dtype=float)
+        while arr.ndim > 2:
+            arr = arr[0]
+        return arr[:, 1] if arr.ndim == 2 else arr
 
 
 def build_models(with_chronos: bool = False) -> dict:

@@ -20,9 +20,9 @@ def main() -> None:
     FIG.mkdir(parents=True, exist_ok=True)
 
     pt = pass_through.run()
-    price = pt[pt["target"] == "usd_per_kg"].set_index("series")
-    print("S1 pass-through of lead price into export unit price (USD/kg), by destination:")
-    cols = ["n", "cpt0", "cpt3", "cpt3_se", "cpt3_p", "cpt6", "cpt6_p", "peak_lag", "fx_beta", "r2"]
+    price = pt[pt["target"] == "usd_per_kg"].set_index("series").sort_values("rank")
+    print("S1 pass-through of lead price into export unit price (USD/kg), top-15 destinations + WORLD:")
+    cols = ["rank", "country", "n", "cpt3", "cpt3_se", "cpt3_p", "cpt6", "cpt6_p", "peak_lag", "fx_beta", "r2"]
     print(price[cols].round(3).to_string())
     vol = pt[pt["target"] == "kg"].set_index("series")
     print("\nS1 lead price -> volume (kg), should be insignificant:")
@@ -33,12 +33,14 @@ def main() -> None:
     print(f"H5 (lead moves value not volume): insignificant volume in {v1['H5_n_insig_volume']}/5 -> "
           f"{'SUPPORTED' if v1['H5'] else 'REJECTED'}")
 
-    fig, ax = plt.subplots(figsize=(7, 3.5))
-    p5 = price.loc[["US", "JP", "AU", "GB", "CA"]]
-    ax.bar(p5.index, p5["cpt3"], yerr=1.96 * p5["cpt3_se"], color="#4c72b0", capsize=4)
+    fig, ax = plt.subplots(figsize=(10, 4))
+    pm = price[price["rank"] > 0].sort_values("cpt3", ascending=False)
+    colors = ["#2563eb" if p < 0.05 else "#9ca3af" for p in pm["cpt3_p"]]
+    ax.bar(pm.index, pm["cpt3"], yerr=1.96 * pm["cpt3_se"], color=colors, capsize=3)
     ax.axhline(0, color="k", lw=0.8)
     ax.set_ylabel("CPT(3): cumulative pass-through, 3 months")
-    ax.set_title("Lead price -> export unit price (USD/kg), by destination")
+    ax.set_title("Lead price -> export unit price (USD/kg), top-15 destinations (grey = not significant)")
+    ax.tick_params(axis="x", labelsize=8)
     fig.tight_layout()
     fig.savefig(FIG / "s1_pass_through.png", dpi=120)
     plt.close(fig)

@@ -57,15 +57,39 @@ def fit(y: pd.Series, lead: pd.Series, fx: pd.Series, maxlags: int = 6) -> dict:
     return out
 
 
-def run() -> pd.DataFrame:
-    s, lead, fx = load_inputs()
+def top_markets(n: int = 15) -> pd.DataFrame:
+    """Monthly kg/usd/unit price for the top-n destinations by 2023-2025 kg, plus WORLD."""
+    ex = pd.read_parquet(P / "export_monthly.parquet")
+    ex["year"] = ex["date"].dt.year
+    rank = ex[ex["year"].between(2023, 2025)].groupby("country_code")["exp_kg"].sum().sort_values(ascending=False)
+    top = rank.head(n).index.tolist()
+    idx = pd.date_range(ex["date"].min(), ex["date"].max(), freq="MS")
+    frames = []
+    for c in top:
+        g = ex[ex["country_code"] == c].groupby("date")[["exp_kg", "exp_usd"]].sum().reindex(idx, fill_value=0)
+        frames.append(g.assign(series=c))
+    frames.append(ex.groupby("date")[["exp_kg", "exp_usd"]].sum().reindex(idx, fill_value=0).assign(series="WORLD"))
+    out = pd.concat(frames).rename_axis("date").reset_index().rename(columns={"exp_kg": "kg", "exp_usd": "usd"})
+    out["usd_per_kg"] = out["usd"] / out["kg"].where(out["kg"] > 0)
+    names = ex.drop_duplicates("country_code").set_index("country_code")["country"]
+    out["country"] = out["series"].map(names).fillna("합계")
+    out["rank"] = out["series"].map({c: i + 1 for i, c in enumerate(top)}).fillna(0).astype(int)
+    return out
+
+
+def run(n_markets: int = 15) -> pd.DataFrame:
+    _, lead, fx = load_inputs()
+    s = top_markets(n_markets)
     rows = []
     for name, g in s.groupby("series"):
         g = g.set_index("date")
+        meta = dict(country=g["country"].iloc[0], rank=int(g["rank"].iloc[0]))
         for target in ["usd_per_kg", "kg"]:
             y = g[target].where(g[target] > 0).dropna()
+            if len(y) < 60 or (y == 0).mean() > 0.2:
+                continue
             r = fit(y, lead.reindex(y.index).ffill(), fx.reindex(y.index).ffill())
-            r.update(series=name, target=target)
+            r.update(series=name, target=target, **meta)
             rows.append(r)
     out = pd.DataFrame(rows)
     out.to_parquet(P / "pass_through.parquet", index=False)
