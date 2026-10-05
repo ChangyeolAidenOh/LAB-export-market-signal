@@ -1,0 +1,13 @@
+pandas
+pyarrow
+numpy
+scipy
+statsmodels
+ruptures
+matplotlib
+requests
+python-dotenv
+pycountry
+openpyxl
+streamlit
+plotly

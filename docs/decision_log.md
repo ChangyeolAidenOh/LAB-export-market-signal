@@ -68,6 +68,46 @@ S3 and S4 are scenario/scoring outputs and are not hypothesis-tested.
 - Behaviour of the PELT detector in 2020 (COVID) and 2021–22 (freight) windows.
 - US 2026 YTD (Jan–Aug) kg annualises to ~232M vs 278M in 2025 (−17%); attribution to tariff vs US local production is a question for S2/S3, not a finding.
 
+
+---
+
+## Stage 1–2 results — 2026-10-05
+
+### Backbone (Stage 1)
+
+| Series | Adopted | MASE h1–3 | cov80 |
+|---|---|---|---|
+| US | M1 STL+ETS | 0.866 | 0.722 |
+| JP | M1 STL+ETS | 0.738 | 0.833 |
+| AU | M1 STL+ETS | 0.773 | 0.722 |
+| GB | M2 SARIMA | 0.899 | 0.722 |
+| CA | M2 SARIMA | 1.096 | 0.861 |
+| WORLD | M0 seasonal naive | 1.041 | 0.778 |
+
+Changepoints (PELT on STL-adjusted log kg): US l2 2020-08, 2022-07, 2023-08; rbf 2020-08, 2023-08. WORLD l2/rbf 2020-06, 2022-06, 2023-09, 2025-10. GB 2025-03 (both).
+
+### Verdicts
+
+| ID | Verdict | Evidence |
+|---|---|---|
+| H1 | REJECTED | No US changepoint in 2025-02..2025-06. April 2025 is a one-month front-loading spike followed by a gradual decline, not a level shift. WORLD shows a level-down break at 2025-10. |
+| H2 | REJECTED | US total imports (0060, units) post/pre = 0.847 (−15%); Korea share change = +1.3pp (−0.45 sd, i.e. up). |
+| H3 | REJECTED | Largest value-share gain = Germany +3.1pp; Mexico +2.6pp. Largest losses China −4.2pp, Vietnam −3.2pp. |
+| H4 | SUPPORTED | CPT(3): GB 0.87, AU 0.27, CA 0.26, US 0.21, JP 0.17 (n.s.). Spread 70pp; 4/5 HAC-significant. |
+| H5 | SUPPORTED | Volume regressions insignificant in 4/5 (GB significant negative). |
+| H6 | NOT TESTED | Chronos not run in Phase 1. |
+
+### Reading (for README)
+
+- Tariff did not create a break at the effective date; the pre-tariff shipment pull-forward and a later, gradual decline are what the data show. A level drop appears in the aggregate six months later.
+- The US market shrank after the tariff; within it, low-cost origins exited and premium origins gained; Korea held share. The pre-registered "Korea loses to Mexico" story is wrong.
+- Lead-price pass-through is fast and near-complete in the UK, slow and partial in the US and Japan — a market-level pricing-power difference, not a uniform cost pass-through.
+
 ## Post-hoc changes
 
-(none)
+(none — hypotheses, windows and rules unchanged)
+
+## Exploratory additions (dated)
+
+- 2026-10-05: candidate trend-break test (PELT model="linear") for the 2025H2 slope change in the US series — not run yet.
+
